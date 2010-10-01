@@ -7,7 +7,7 @@ each JSON piece to an upstream HTTP server. It handles all connection management
 
 In the (near) future, this will evolve to use SiteStreams, as it should.
 
-!http://0x82.blog.s3.amazonaws.com/01102010/twitter-streamer-hub-thumb.png!
+"!http://0x82.blog.s3.amazonaws.com/01102010/twitter-streamer-hub-thumb.png!":http://0x82.blog.s3.amazonaws.com/01102010/twitter-streamer-hub.png=.
 
 h2. Requirements
 
