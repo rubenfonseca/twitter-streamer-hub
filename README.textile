@@ -1,0 +1,78 @@
+h1. Twitter Streamer Hub for node.js
+
+Twitter Streamer Hub for node.js is an all-purpose, generic twitter UserStreams client hub. It powers websites such as "Twitter RSS Links":http://twitterrsslinks.com.
+
+It allows one to connect to multiple twitter accounts, using Twitter UserStreams, and post
+each JSON piece to an upstream HTTP server. It handles all connection management and error handling, reconnecting to Twitter when the connection drops.
+
+In the (near) future, this will evolve to use SiteStreams, as it should.
+
+h2. Requirements
+
+* node.js (tested with latest)
+* npm
+* upstream server (to bootstrap and post data)
+* capistrano (if you decide to deploy this project using it)
+
+h2. HowTo
+
+First install node.js and npm.
+
+Then do @npm bundle ./vendor@ on the root of this project. This will install external dependencies on the vendor directory.
+
+Now can divide this app in 3 different stages / steps: bootstrap, post new data, add new client
+
+h3. Bootstrap
+
+To start Twitter Streamer, you must have a bootstrap HTTP server, than node connects to get some configuration values. You do that by passing the bootstrap hostname and port to the server.js file.
+
+@node server.js localhost 3000@
+
+Doing that, Twitter Streamer will do a GET request on @http://localhost:3000/nodejs/bootstrap@. It expects the following JSON response (ruby example here):
+
+<code>
+config = { 
+ :config => {
+   :twitter_user_stream     => 'http://betastream.twitter.com/2b/user.json',
+   :upstream_host           => 'localhost',
+   :upstream_port           => 3000,
+   :upstream_path           => '/nodejs/data/'
+ },
+ :clients => [ 
+    {
+      :id => 1,
+      :twitter_id => 123123123,
+      :oauth_token => "11528912-Bigu2h1hRti7BDQSI9cFIBcgEawO3TTlz6Swrm70",
+      :oauth_token_secret => "KPz1FOGOfuzGtbkXoHfohAxXwQHIW8w03eMUghxNQY"
+    },
+    {
+      ...
+    }
+  ],
+}
+config.to_json
+</code>
+
+New tweets will be post to @http://config['upstream_host']:config['upstream_port']/config['upstream_path']@.
+
+The array of clients is the array of UserStream connections that Twitter Streamer will make. Each one must have a correct oauth_token and oauth_token_secret for the user.
+
+h3. Post new data
+
+For each twitter client, every time a new piece of JSON arrives to node.js, a POST will be made (see previous section on how to configure it).
+
+@POST http://localhost:3000/nodejs/data/:twitter_id@, where @:twitter_id@ will be replaced with the user twitter_id (duh).
+
+The raw POST will be the raw JSON data that arrived from Twitter.
+
+h3. Add new client
+
+When Twitter Streamer is running, you may want to add a new client connection without restarting node (and bootstrapping again). For that, Twitter Streamer opens an HTTP server on port 6666 with a single endpoint:
+
+@POST http://localhost:6666/add_client@
+
+It expects the following form_encoded params: @id@, @twitter_id@, @oauth_token@ and @oauth_token_secret@. If it receives all this parameters it will initiate a new UserStream connection for this client and start delivering tweets on upstream.
+
+h2. Warnings
+
+This is beta software, although it is used on "Twitter RSS Links":http://twitterrsslinks.com.

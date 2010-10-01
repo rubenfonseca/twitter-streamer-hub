@@ -1,0 +1,9 @@
+{ "name" : "twitter user stream hub"
+, "version" : "1.0.0"
+, "description" : "connects to twitter user streams (beta) and posts returning data to a HTTP endpoint"
+, "dependencies" :
+  {
+    "express" : ""
+  , "oauth" : ""
+  }
+}
