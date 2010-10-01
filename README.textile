@@ -7,6 +7,8 @@ each JSON piece to an upstream HTTP server. It handles all connection management
 
 In the (near) future, this will evolve to use SiteStreams, as it should.
 
+!http://0x82.blog.s3.amazonaws.com/01102010/twitter-streamer-hub-thumb.png!
+
 h2. Requirements
 
 * node.js (tested with latest)
@@ -30,7 +32,7 @@ To start Twitter Streamer, you must have a bootstrap HTTP server, than node conn
 
 Doing that, Twitter Streamer will do a GET request on @http://localhost:3000/nodejs/bootstrap@. It expects the following JSON response (ruby example here):
 
-<code>
+<pre>
 config = { 
  :config => {
    :twitter_user_stream     => 'http://betastream.twitter.com/2b/user.json',
@@ -51,7 +53,7 @@ config = {
   ],
 }
 config.to_json
-</code>
+</pre>
 
 New tweets will be post to @http://config['upstream_host']:config['upstream_port']/config['upstream_path']@.
 
