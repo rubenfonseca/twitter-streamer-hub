@@ -1,4 +1,4 @@
-{ "name" : "twitter user stream hub"
+{ "name" : "twitter_user_stream_hub"
 , "version" : "1.0.0"
 , "description" : "connects to twitter user streams (beta) and posts returning data to a HTTP endpoint"
 , "dependencies" :
