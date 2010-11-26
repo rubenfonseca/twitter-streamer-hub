@@ -31,7 +31,7 @@ namespace :deploy do
   end
   
   task :bundle_npm, :roles => :app do
-    run "cd #{release_path} && #{try_sudo :as => 'root'} npm bundle ./vendor"
+    run "cd #{release_path} && npm bundle ./vendor"
   end
   
   task :create_deploy_to_with_sudo, :roles => :app do
